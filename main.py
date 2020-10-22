@@ -57,43 +57,40 @@ class Overlay(QWidget):
         painter.begin(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 187)))
-        painter.setPen(QPen(Qt.NoPen))
 
-        amount_of_circles = 8
+        amount_of_circles = 12
 
         for i in range(amount_of_circles):
-            if (self.counter) % amount_of_circles == i: painter.setBrush(QBrush(QColor(205,56,59)))
-            elif (self.counter) % amount_of_circles == i-1: painter.setBrush(QBrush(QColor(205-10,56,59)))
-            elif (self.counter) % amount_of_circles == i-2: painter.setBrush(QBrush(QColor(205-20,56,59)))
-            elif (self.counter) % amount_of_circles == i-3: painter.setBrush(QBrush(QColor(205-30,56,59)))
-            elif (self.counter) % amount_of_circles == i-4: painter.setBrush(QBrush(QColor(205-40,56,59)))
-            elif (self.counter) % amount_of_circles == i-5: painter.setBrush(QBrush(QColor(205-50,56,59)))
-            elif (self.counter) % amount_of_circles == i-6: painter.setBrush(QBrush(QColor(205-60,56,59)))
-            elif (self.counter) % amount_of_circles == i-7: painter.setBrush(QBrush(QColor(205-70,56,59)))
-            elif (self.counter) % amount_of_circles == i-8: painter.setBrush(QBrush(QColor(205-80,56,59)))
-            else: painter.setBrush(QBrush(QColor(127, 127, 127)))
+            painter.setPen(QPen(Qt.NoPen)) 
+            if (self.counter) % amount_of_circles == i:  painter.setBrush(QBrush(QColor(56,165,59)))
+            elif (self.counter) % amount_of_circles == i + 4:  painter.setBrush(QBrush(QColor(56,165,59)))
+            elif (self.counter) % amount_of_circles == i + 8:  painter.setBrush(QBrush(QColor(56,165,59)))
+            elif (self.counter) % amount_of_circles == i - 4:  painter.setBrush(QBrush(QColor(56,165,59)))
+            elif (self.counter) % amount_of_circles == i - 8:  painter.setBrush(QBrush(QColor(56,165,59)))
+            else: painter.setBrush(QBrush(QColor(205-(i*10),56,59)))
+            # else: painter.setBrush(QBrush(QColor(127, 127, 127)))
             painter.drawEllipse(
-                self.width() / 2 + 40 * math.cos(2 * math.pi * i / amount_of_circles) - 10,
-                self.height() / 2 + 40 * math.sin(2 * math.pi * i / amount_of_circles) - 10,
+                self.width() / 2 + 50 * math.cos(2 * math.pi * i / amount_of_circles) - 20,
+                self.height() / 2.2 + 50 * math.sin(2 * math.pi * i / amount_of_circles) - 20,
                 20, 20)
-        pen = QtGui.QPen(QtGui.QColor(127, 127, 127))
-        pen.setWidth(1)
-        painter.setPen(pen)
-
-        font = QtGui.QFont()
-        font.setPointSize(22)
-        painter.setFont(font)
-        painter.drawText(int(self.width() / 2 - 55), int(self.height()/1.5), 160, 50, Qt.AlignLeft | Qt.AlignLeft, "Starting...")
+            painter.setPen(QPen(QColor(127, 127, 127), 1))
+            painter.setFont(QFont(None,22, 1, False))
+            if (self.counter) % amount_of_circles == i: w = "Starting."
+            elif (self.counter) % amount_of_circles == i + (amount_of_circles/2-1): w = "Starting.."
+            elif (self.counter) % amount_of_circles == i + (amount_of_circles-3): w = "Starting..."
+            else: w = 'Starting'
+            painter.drawText(int(self.width() / 2 - 55), int(self.height()/1.5), 160, 50, Qt.AlignLeft | Qt.AlignLeft, w)
+             
         painter.end()
 
     def showEvent(self, event):
-        self.timer = self.startTimer(50)
+        self.timer = self.startTimer(100)
         self.counter = 0
 
     def timerEvent(self, event):
         self.counter += 1
         self.update()
-        if self.counter == 60:
+        if self.counter == 20:
             self.killTimer(self.timer)
             self.close()
 
