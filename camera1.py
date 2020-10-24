@@ -26,8 +26,7 @@ def autoAdjustments_with_convertScaleAbs(img):
     amin = 0
     alpha = ((amax - amin) / (ahigh - alow))
     beta = amin - alow * alpha
-    new_img = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
-    return new_img
+    return cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
 
 def exit_handler(): btnStop()
 
