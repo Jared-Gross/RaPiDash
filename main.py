@@ -22,30 +22,40 @@ outputFrame2 = None
 outputFrame3 = None
 outputFrame4 = None
 
+
 class QLabelClickable(QLabel):
     clicked = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(QLabelClickable, self).__init__(parent)
 
-    def mousePressEvent(self, event): self.ultimo = "Clic"
+    def mousePressEvent(self, event):
+        self.ultimo = "Clic"
 
     def mouseReleaseEvent(self, event):
-        if self.ultimo == "Clic": QTimer.singleShot(QApplication.instance().doubleClickInterval(), self.performSingleClickAction)
-        else: self.clicked.emit(self.ultimo)
+        if self.ultimo == "Clic":
+            QTimer.singleShot(QApplication.instance().doubleClickInterval(), self.performSingleClickAction)
+        else:
+            self.clicked.emit(self.ultimo)
 
-    def mouseDoubleClickEvent(self, event): self.ultimo = "Doble Clic"
+    def mouseDoubleClickEvent(self, event):
+        self.ultimo = "Doble Clic"
 
     def performSingleClickAction(self):
         if self.ultimo == "Clic": self.clicked.emit(self.ultimo)
 
-    def enterEvent(self,event): self.setStyleSheet("color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid lime;")
+    def enterEvent(self, event):
+        self.setStyleSheet(
+            "color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid lime;")
 
-    def leaveEvent(self,event): self.setStyleSheet("color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid black;")
+    def leaveEvent(self, event):
+        self.setStyleSheet(
+            "color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid black;")
+
 
 class Overlay(QWidget):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
@@ -61,26 +71,37 @@ class Overlay(QWidget):
         amount_of_circles = 12
 
         for i in range(amount_of_circles):
-            painter.setPen(QPen(Qt.NoPen)) 
-            if (self.counter) % amount_of_circles == i:  painter.setBrush(QBrush(QColor(56,165,59)))
-            elif (self.counter) % amount_of_circles == i + 4:  painter.setBrush(QBrush(QColor(56,165,59)))
-            elif (self.counter) % amount_of_circles == i + 8:  painter.setBrush(QBrush(QColor(56,165,59)))
-            elif (self.counter) % amount_of_circles == i - 4:  painter.setBrush(QBrush(QColor(56,165,59)))
-            elif (self.counter) % amount_of_circles == i - 8:  painter.setBrush(QBrush(QColor(56,165,59)))
-            else: painter.setBrush(QBrush(QColor(205-(i*10),56,59)))
+            painter.setPen(QPen(Qt.NoPen))
+            if (self.counter) % amount_of_circles == i:
+                painter.setBrush(QBrush(QColor(56, 165, 59)))
+            elif (self.counter) % amount_of_circles == i + 4:
+                painter.setBrush(QBrush(QColor(56, 165, 59)))
+            elif (self.counter) % amount_of_circles == i + 8:
+                painter.setBrush(QBrush(QColor(56, 165, 59)))
+            elif (self.counter) % amount_of_circles == i - 4:
+                painter.setBrush(QBrush(QColor(56, 165, 59)))
+            elif (self.counter) % amount_of_circles == i - 8:
+                painter.setBrush(QBrush(QColor(56, 165, 59)))
+            else:
+                painter.setBrush(QBrush(QColor(205 - (i * 10), 56, 59)))
             # else: painter.setBrush(QBrush(QColor(127, 127, 127)))
             painter.drawEllipse(
                 self.width() / 2 + 50 * math.cos(2 * math.pi * i / amount_of_circles) - 20,
                 self.height() / 2.2 + 50 * math.sin(2 * math.pi * i / amount_of_circles) - 20,
                 20, 20)
             painter.setPen(QPen(QColor(127, 127, 127), 1))
-            painter.setFont(QFont(None,22, 1, False))
-            if (self.counter) % amount_of_circles == i: w = "Starting."
-            elif (self.counter) % amount_of_circles == i + (amount_of_circles/2-1): w = "Starting.."
-            elif (self.counter) % amount_of_circles == i + (amount_of_circles-3): w = "Starting..."
-            else: w = 'Starting'
-            painter.drawText(int(self.width() / 2 - 55), int(self.height()/1.5), 160, 50, Qt.AlignLeft | Qt.AlignLeft, w)
-             
+            painter.setFont(QFont(None, 22, 1, False))
+            if (self.counter) % amount_of_circles == i:
+                w = "Starting."
+            elif (self.counter) % amount_of_circles == i + (amount_of_circles / 2 - 1):
+                w = "Starting.."
+            elif (self.counter) % amount_of_circles == i + (amount_of_circles - 3):
+                w = "Starting..."
+            else:
+                w = 'Starting'
+            painter.drawText(int(self.width() / 2 - 55), int(self.height() / 1.5), 160, 50, Qt.AlignLeft | Qt.AlignLeft,
+                             w)
+
         painter.end()
 
     def showEvent(self, event):
@@ -93,6 +114,7 @@ class Overlay(QWidget):
         if self.counter == 20:
             self.killTimer(self.timer)
             self.close()
+
 
 class mainwindowUI(QMainWindow):
 
@@ -169,7 +191,8 @@ class mainwindowUI(QMainWindow):
         self.lblCameras = [self.lblCam1, self.lblCam2, self.lblCam3, self.lblCam4]
 
         for index, cam in enumerate(self.lblCameras):
-            cam.setStyleSheet("color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid black;")
+            cam.setStyleSheet(
+                "color: black; background-color: black; border-radius: 3px; border-style: none; border: 1px solid black;")
             cam.setAlignment(Qt.AlignCenter)
             cam.clicked.connect(partial(self.lblCamClicked, cam, index, True))
 
@@ -279,17 +302,20 @@ class mainwindowUI(QMainWindow):
         self.btnBackToCameras.setHidden(True)
 
     # @pyqtSlot(QObject, QImage, int)
-    def setImageCam(self, label, image, index, name = None):
+    def setImageCam(self, label, image, index, name=None):
         if name == '404.png':
             self.cameraGrid.removeWidget(self.lblCameras[index])
             self.lblCameras[index].deleteLater()
             self.lblCameras[index] = None
             self.lblCameras.pop(index)
             return
-        if self.isCamViewFullScreen: image = image.scaled(640,480, Qt.KeepAspectRatio, Qt.FastTransformation)
-        else: image = image.scaled(320,240, Qt.KeepAspectRatio, Qt.FastTransformation)
-        label.setFixedSize(image.width(),image.height())
+        if self.isCamViewFullScreen:
+            image = image.scaled(640, 480, Qt.KeepAspectRatio, Qt.FastTransformation)
+        else:
+            image = image.scaled(320, 240, Qt.KeepAspectRatio, Qt.FastTransformation)
+        label.setFixedSize(image.width(), image.height())
         label.setPixmap(QPixmap.fromImage(image))
+
 
 class Thread1(QThread):
     changePixmap = pyqtSignal(object, QImage, int, str)
@@ -309,12 +335,13 @@ class Thread1(QThread):
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port,'')
+                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port, '')
             except:
-                self.lblCam.setFixedSize(1,1)
+                self.lblCam.setFixedSize(1, 1)
                 image = QImage('404.png')
                 self.changePixmap.emit(self.lblCam, image, self.port, '404.png')
                 break
+
 
 class Thread2(QThread):
     changePixmap = pyqtSignal(object, QImage, int, str)
@@ -334,12 +361,13 @@ class Thread2(QThread):
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port,'')
+                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port, '')
             except:
-                self.lblCam.setFixedSize(1,1)
+                self.lblCam.setFixedSize(1, 1)
                 image = QImage('404.png')
                 self.changePixmap.emit(self.lblCam, image, self.port, '404.png')
                 break
+
 
 class Thread3(QThread):
     changePixmap = pyqtSignal(object, QImage, int, str)
@@ -359,12 +387,13 @@ class Thread3(QThread):
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port,'')
+                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port, '')
             except:
-                self.lblCam.setFixedSize(1,1)
+                self.lblCam.setFixedSize(1, 1)
                 image = QImage('404.png')
                 self.changePixmap.emit(self.lblCam, image, self.port, '404.png')
                 break
+
 
 class Thread4(QThread):
     changePixmap = pyqtSignal(object, QImage, int, str)
@@ -384,12 +413,14 @@ class Thread4(QThread):
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port,'')
+                self.changePixmap.emit(self.lblCam, convertToQtFormat, self.port, '')
             except:
-                self.lblCam.setFixedSize(1,1)
+                self.lblCam.setFixedSize(1, 1)
                 image = QImage('404.png')
                 self.changePixmap.emit(self.lblCam, image, self.port, '404.png')
                 break
+
+
 # def load_config_file(*args):
 #     global config_json
 #     for i, j in enumerate(args):

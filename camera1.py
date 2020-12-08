@@ -12,7 +12,7 @@ firstFrame = None
 isRunning = None
 def camRun():
     try:
-        if isRunning == False: btnStop()
+        if not isRunning: btnStop()
         ret, frame = cap.read()
         # cv2.putText(frame, "Front", (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
         # cv2.putText(frame, datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
