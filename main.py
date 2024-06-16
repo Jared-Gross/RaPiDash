@@ -254,7 +254,8 @@ class mainwindowUI(QMainWindow):
         self.frameMainMenu.setHidden(False)
 
     def backToCameras(self):
-        for i in range(len(self.lblCameras)): self.lblCameras[i].setHidden(False)
+        for lblCamera in self.lblCameras:
+            lblCamera.setHidden(False)
         self.btnCamerasClicked()
         self.isCamViewFullScreen = False
 
@@ -265,7 +266,8 @@ class mainwindowUI(QMainWindow):
             lbl.clicked.connect(partial(self.lblCamClicked, lbl, index, False))
             self.btnBackToMenu.setHidden(True)
             self.btnBackToCameras.setHidden(False)
-            for i in range(len(self.lblCameras)): self.lblCameras[i].setHidden(True)
+            for lblCamera in self.lblCameras:
+                lblCamera.setHidden(True)
             lbl.setHidden(False)
         else:
             self.isCamViewFullScreen = False
@@ -329,7 +331,7 @@ class Thread1(QThread):
     @pyqtSlot()
     def run(self):
         while running:
-            if running: frame1 = camera1.camRun()
+            frame1 = camera1.camRun()
             try:
                 rgbImage = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
@@ -355,7 +357,7 @@ class Thread2(QThread):
     @pyqtSlot()
     def run(self):
         while running:
-            if running: frame2 = camera2.camRun()
+            frame2 = camera2.camRun()
             try:
                 rgbImage = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
@@ -381,7 +383,7 @@ class Thread3(QThread):
     @pyqtSlot()
     def run(self):
         while running:
-            if running: frame3 = camera3.camRun()
+            frame3 = camera3.camRun()
             try:
                 rgbImage = cv2.cvtColor(frame3, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
@@ -407,7 +409,7 @@ class Thread4(QThread):
     @pyqtSlot()
     def run(self):
         while running:
-            if running: frame4 = camera4.camRun()
+            frame4 = camera4.camRun()
             try:
                 rgbImage = cv2.cvtColor(frame4, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
